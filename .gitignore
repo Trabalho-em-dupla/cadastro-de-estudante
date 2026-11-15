@@ -1,0 +1,5 @@
+# Dependências instaladas pelo Composer
+/vendor/
+
+# Arquivo com a senha do banco (NUNCA enviar ao GitHub)
+config.local.php
