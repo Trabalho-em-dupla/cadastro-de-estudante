@@ -1,42 +1,43 @@
 <?php
+// conexao.php
+// Função que conecta ao MongoDB e devolve o banco de dados.
+// Todas as páginas do sistema usam: $banco = conectarBanco();
 
-declare(strict_types=1);
+require_once __DIR__ . '/vendor/autoload.php';
 
-$configPath = __DIR__ . '/config.local.php';
-$autoloadPath = __DIR__ . '/vendor/autoload.php';
+function conectarBanco()
+{
+    // "static" guarda a conexão, para não reconectar a cada chamada
+    static $banco = null;
 
-if (!is_file($configPath)) {
-    throw new RuntimeException(
-        'Arquivo config.local.php não encontrado. Copie config.example.php para config.local.php e configure a conexão.'
-    );
-}
-
-if (!is_file($autoloadPath)) {
-    throw new RuntimeException('Dependências ausentes. Execute composer install na raiz do projeto.');
-}
-
-if (!extension_loaded('mongodb')) {
-    throw new RuntimeException('A extensão mongodb do PHP não está habilitada.');
-}
-
-require_once $autoloadPath;
-
-$config = require $configPath;
-
-if (!is_array($config)) {
-    throw new RuntimeException('A configuração local deve retornar um array.');
-}
-
-foreach (['uri', 'banco'] as $campo) {
-    if (!isset($config[$campo]) || !is_string($config[$campo]) || trim($config[$campo]) === '') {
-        throw new RuntimeException("O campo '{$campo}' deve ser preenchido em config.local.php.");
+    if ($banco !== null) {
+        return $banco;
     }
+
+    $caminhoConfig = __DIR__ . '/config.local.php';
+
+    // Verificações com mensagens claras, úteis para quem for rodar o projeto
+    if (!is_file($caminhoConfig)) {
+        throw new RuntimeException(
+            'Arquivo config.local.php não encontrado. Copie config.example.php para config.local.php e configure a conexão.'
+        );
+    }
+
+    if (!extension_loaded('mongodb')) {
+        throw new RuntimeException('A extensão mongodb do PHP não está habilitada.');
+    }
+
+    // Lê as configurações (uri e banco) do config.local.php
+    $config = require $caminhoConfig;
+
+    // O terceiro parâmetro limita a espera a 5 segundos se o Atlas não responder
+    $cliente = new MongoDB\Client(
+        $config['uri'],
+        [],
+        ['serverSelectionTimeoutMS' => 5000]
+    );
+
+    $banco = $cliente->selectDatabase($config['banco']);
+
+    return $banco;
 }
-
-$cliente = new MongoDB\Client(
-    $config['uri'],
-    [],
-    ['serverSelectionTimeoutMS' => 5000]
-);
-
-$banco = $cliente->selectDatabase($config['banco']);
