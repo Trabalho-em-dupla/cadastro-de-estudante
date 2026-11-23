@@ -1,6 +1,4 @@
 <?php
-// estudantes/editar.php
-// Mostra o formulário preenchido com os dados do estudante e salva as alterações.
 
 require_once __DIR__ . '/../conexao.php';
 
@@ -10,7 +8,6 @@ $titulo = 'Editar Estudante';
 $erro = '';
 $banco = conectarBanco();
 
-// Pega o id da URL e converte para ObjectId
 try {
     $id = new ObjectId($_GET['id'] ?? '');
 } catch (Exception $e) {
@@ -18,14 +15,12 @@ try {
     exit;
 }
 
-// Busca o estudante; se não existir, volta para a lista
 $estudante = $banco->estudantes->findOne(['_id' => $id]);
 if (!$estudante) {
     header('Location: listar.php');
     exit;
 }
 
-// Monta um array simples com os dados para preencher o formulário
 $dados = [
     'nome'            => $estudante['nome'],
     'email'           => $estudante['email'],
@@ -59,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $estado      = strtoupper(trim($_POST['estado'] ?? ''));
     $complemento = trim($_POST['complemento'] ?? '');
 
-    // Se der erro, o formulário continua mostrando o que a pessoa digitou
     $dados = [
         'nome' => $nome, 'email' => $email, 'cpf' => $cpf,
         'data_nascimento' => $dataNascimento, 'telefone' => $telefone, 'ra' => $ra,
@@ -76,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($cep === '' || $rua === '' || $numero === '' || $bairro === '' || $cidade === '' || $estado === '') {
         $erro = 'Preencha o endereço (complemento é opcional).';
     } else {
-        // CPF, RA e e-mail não podem repetir em OUTRO estudante ($ne = "diferente de")
         $outro = $banco->estudantes->findOne([
             '_id' => ['$ne' => $id],
             '$or' => [['cpf' => $cpf], ['ra' => $ra], ['email' => $email]],

@@ -1,6 +1,4 @@
 <?php
-// cursos/editar.php
-// Mostra o formulário preenchido com os dados do curso e salva as alterações.
 
 require_once __DIR__ . '/../conexao.php';
 
@@ -10,7 +8,6 @@ $titulo = 'Editar Curso';
 $erro = '';
 $banco = conectarBanco();
 
-// Pega o id da URL e converte para ObjectId (o tipo que o MongoDB usa no _id)
 try {
     $id = new ObjectId($_GET['id'] ?? '');
 } catch (Exception $e) {
@@ -18,14 +15,12 @@ try {
     exit;
 }
 
-// Busca o curso no banco; se não existir, volta para a lista
 $curso = $banco->cursos->findOne(['_id' => $id]);
 if (!$curso) {
     header('Location: listar.php');
     exit;
 }
 
-// Formulário enviado (botão Salvar)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $nome         = trim($_POST['nome'] ?? '');
@@ -35,22 +30,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cargaHoraria = (int) ($_POST['carga_horaria'] ?? 0);
     $vagas        = (int) ($_POST['vagas'] ?? 0);
 
-    // Quantos estudantes já estão matriculados neste curso
     $ocupadas = $banco->matriculas->countDocuments(['curso_id' => $id]);
 
     if ($nome === '' || $codigo === '' || $professor === '' || $cargaHoraria <= 0 || $vagas <= 0) {
         $erro = 'Preencha nome, código, professor, carga horária e vagas (números maiores que zero).';
     } elseif ($vagas < $ocupadas) {
-        // Não deixa reduzir as vagas abaixo do número de matriculados
         $erro = "Este curso já tem $ocupadas matriculados. As vagas não podem ser menores que isso.";
     } else {
-        // O código não pode repetir o de OUTRO curso ($ne = "diferente de")
         $outro = $banco->cursos->findOne(['codigo' => $codigo, '_id' => ['$ne' => $id]]);
 
         if ($outro) {
             $erro = 'Já existe outro curso com esse código.';
         } else {
-            // updateOne altera só os campos informados em $set
             $banco->cursos->updateOne(
                 ['_id' => $id],
                 ['$set' => [
@@ -68,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Se deu erro, mantém na tela o que a pessoa digitou
     $curso = [
         'nome'          => $nome,
         'codigo'        => $codigo,

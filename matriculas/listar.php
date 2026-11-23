@@ -1,21 +1,16 @@
 <?php
-// matriculas/listar.php
-// Mostra as matrículas de duas formas: por curso e por estudante.
-// A matrícula guarda só os ObjectIds; os nomes são buscados nas outras coleções.
 
 require_once __DIR__ . '/../conexao.php';
 
 $titulo = 'Matrículas';
 $banco = conectarBanco();
 
-// Mensagens de aviso que vêm na URL (ex.: ?msg=matriculado)
 $msg = $_GET['msg'] ?? '';
 $mensagens = [
     'matriculado' => 'Matrícula realizada com sucesso!',
     'cancelada'   => 'Matrícula cancelada com sucesso!',
 ];
 
-// Carrega tudo uma vez e indexa pelo _id para buscar nomes rapidamente
 $estudantes = [];
 foreach ($banco->estudantes->find([], ['sort' => ['nome' => 1]]) as $e) {
     $estudantes[(string) $e['_id']] = $e;
@@ -26,7 +21,6 @@ foreach ($banco->cursos->find([], ['sort' => ['nome' => 1]]) as $c) {
     $cursos[(string) $c['_id']] = $c;
 }
 
-// Agrupa as matrículas: uma lista por curso e outra por estudante
 $porCurso = [];
 $porEstudante = [];
 foreach ($banco->matriculas->find() as $m) {
@@ -48,7 +42,6 @@ require_once __DIR__ . '/../includes/cabecalho.php';
     <div class="alert alert-success"><?= $mensagens[$msg] ?></div>
 <?php endif; ?>
 
-<!-- Abas do Bootstrap: por curso / por estudante -->
 <ul class="nav nav-tabs mb-3">
     <li class="nav-item">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#aba-curso" type="button">Por curso</button>
@@ -60,7 +53,6 @@ require_once __DIR__ . '/../includes/cabecalho.php';
 
 <div class="tab-content">
 
-    <!-- Visão 1: cada curso com seus estudantes -->
     <div class="tab-pane fade show active" id="aba-curso">
         <?php if (count($cursos) === 0): ?>
             <p class="text-muted">Nenhum curso cadastrado.</p>
@@ -93,7 +85,6 @@ require_once __DIR__ . '/../includes/cabecalho.php';
         <?php endforeach; ?>
     </div>
 
-    <!-- Visão 2: cada estudante com seus cursos -->
     <div class="tab-pane fade" id="aba-estudante">
         <?php if (count($estudantes) === 0): ?>
             <p class="text-muted">Nenhum estudante cadastrado.</p>

@@ -1,6 +1,4 @@
 <?php
-// estudantes/cadastrar.php
-// Mostra o formulário de cadastro de estudante (com endereço) e salva no MongoDB.
 
 require_once __DIR__ . '/../conexao.php';
 
@@ -9,7 +7,6 @@ $erro = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Dados do estudante
     $nome           = trim($_POST['nome'] ?? '');
     $email          = trim($_POST['email'] ?? '');
     $cpf            = preg_replace('/\D/', '', $_POST['cpf'] ?? ''); // deixa só números
@@ -17,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telefone       = trim($_POST['telefone'] ?? '');
     $ra             = trim($_POST['ra'] ?? '');
 
-    // Dados do endereço
     $cep         = preg_replace('/\D/', '', $_POST['cep'] ?? '');
     $rua         = trim($_POST['rua'] ?? '');
     $numero      = trim($_POST['numero'] ?? '');
@@ -26,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $estado      = strtoupper(trim($_POST['estado'] ?? ''));
     $complemento = trim($_POST['complemento'] ?? '');
 
-    // Validações simples
     if ($nome === '' || $email === '' || $cpf === '' || $dataNascimento === '' || $telefone === '' || $ra === '') {
         $erro = 'Preencha todos os dados do estudante.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -38,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $banco = conectarBanco();
 
-        // CPF, RA e e-mail não podem repetir
         $existe = $banco->estudantes->findOne([
             '$or' => [['cpf' => $cpf], ['ra' => $ra], ['email' => $email]]
         ]);
@@ -53,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'data_nascimento' => $dataNascimento,
                 'telefone'        => $telefone,
                 'ra'              => $ra,
-                // Endereço embutido: pertence só a este estudante (1 para 1)
                 'endereco'        => [
                     'cep'         => $cep,
                     'rua'         => $rua,

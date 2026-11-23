@@ -1,16 +1,12 @@
 <?php
-// estudantes/listar.php
-// Lista todos os estudantes cadastrados no MongoDB.
 
 require_once __DIR__ . '/../conexao.php';
 
 $titulo = 'Estudantes';
 $banco = conectarBanco();
 
-// find() busca todos os estudantes; sort ordena pelo nome (1 = A a Z)
 $estudantes = $banco->estudantes->find([], ['sort' => ['nome' => 1]]);
 
-// Mensagem de aviso que vem na URL (ex.: ?msg=cadastrado)
 $msg = $_GET['msg'] ?? '';
 $mensagens = [
     'cadastrado' => 'Estudante cadastrado com sucesso!',
@@ -50,7 +46,6 @@ require_once __DIR__ . '/../includes/cabecalho.php';
             <?php foreach ($estudantes as $estudante): ?>
                 <?php
                 $total++;
-                // Conta em quantos cursos o estudante está matriculado (por referência)
                 $qtdCursos = $banco->matriculas->countDocuments(['estudante_id' => $estudante['_id']]);
                 ?>
                 <tr>

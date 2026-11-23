@@ -1,9 +1,5 @@
 <?php
-// includes/cabecalho.php
-// Topo de todas as páginas: abre o HTML, carrega o Bootstrap e mostra o menu.
-// Cada página define $titulo antes de incluir este arquivo.
 
-// Endereço base do projeto (usado nos links do menu)
 $base = '/Cadastro-Estudante';
 ?>
 <!DOCTYPE html>
@@ -13,12 +9,10 @@ $base = '/Cadastro-Estudante';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars($titulo ?? 'Cadastro de Estudantes') ?></title>
 
-    <!-- Bootstrap 5 (CSS) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
-<!-- Menu de navegação -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
     <div class="container">
         <a class="navbar-brand" href="<?= $base ?>/index.php">Cadastro de Estudantes</a>
@@ -36,5 +30,4 @@ $base = '/Cadastro-Estudante';
     </div>
 </nav>
 
-<!-- Conteúdo da página começa aqui -->
 <main class="container">

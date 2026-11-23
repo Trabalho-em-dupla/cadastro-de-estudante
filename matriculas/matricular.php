@@ -1,7 +1,4 @@
 <?php
-// matriculas/matricular.php
-// Formulário para matricular um estudante em um curso.
-// A matrícula guarda só os ObjectIds (referências), não copia os dados.
 
 require_once __DIR__ . '/../conexao.php';
 
@@ -11,7 +8,6 @@ $titulo = 'Nova Matrícula';
 $erro = '';
 $banco = conectarBanco();
 
-// Busca estudantes e cursos para preencher as listas de escolha
 $estudantes = $banco->estudantes->find([], ['sort' => ['nome' => 1]])->toArray();
 $cursos     = $banco->cursos->find([], ['sort' => ['nome' => 1]])->toArray();
 
@@ -34,13 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$estudante || !$curso) {
             $erro = 'Estudante ou curso não encontrado.';
         } else {
-            // 1) Já está matriculado neste curso?
             $jaExiste = $banco->matriculas->findOne([
                 'estudante_id' => $estudanteId,
                 'curso_id'     => $cursoId,
             ]);
 
-            // 2) Quantas vagas já foram ocupadas?
             $ocupadas = $banco->matriculas->countDocuments(['curso_id' => $cursoId]);
 
             if ($jaExiste) {

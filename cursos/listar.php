@@ -1,16 +1,12 @@
 <?php
-// cursos/listar.php
-// Lista todos os cursos cadastrados no MongoDB.
 
 require_once __DIR__ . '/../conexao.php';
 
 $titulo = 'Cursos';
 $banco = conectarBanco();
 
-// find() busca todos os documentos; sort ordena pelo nome (1 = A a Z)
 $cursos = $banco->cursos->find([], ['sort' => ['nome' => 1]]);
 
-// Mensagem de aviso que vem na URL (ex.: ?msg=cadastrado)
 $msg = $_GET['msg'] ?? '';
 $mensagens = [
     'cadastrado' => 'Curso cadastrado com sucesso!',
@@ -50,7 +46,6 @@ require_once __DIR__ . '/../includes/cabecalho.php';
             <?php foreach ($cursos as $curso): ?>
                 <?php
                 $total++;
-                // Conta quantas matrículas existem para este curso (relacionamento por referência)
                 $ocupadas = $banco->matriculas->countDocuments(['curso_id' => $curso['_id']]);
                 ?>
                 <tr>

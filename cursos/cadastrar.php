@@ -1,16 +1,12 @@
 <?php
-// cursos/cadastrar.php
-// Mostra o formulário de cadastro de curso e salva no MongoDB.
 
 require_once __DIR__ . '/../conexao.php';
 
 $titulo = 'Cadastrar Curso';
 $erro = '';
 
-// Só entra aqui quando o formulário foi enviado (botão Salvar)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // trim() remove espaços sobrando no começo e no fim
     $nome          = trim($_POST['nome'] ?? '');
     $codigo        = trim($_POST['codigo'] ?? '');
     $descricao     = trim($_POST['descricao'] ?? '');
@@ -18,20 +14,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cargaHoraria  = (int) ($_POST['carga_horaria'] ?? 0);
     $vagas         = (int) ($_POST['vagas'] ?? 0);
 
-    // Validação simples: campos obrigatórios
     if ($nome === '' || $codigo === '' || $professor === '' || $cargaHoraria <= 0 || $vagas <= 0) {
         $erro = 'Preencha nome, código, professor, carga horária e vagas (números maiores que zero).';
     } else {
         $banco = conectarBanco();
 
-        // Não permite dois cursos com o mesmo código
         $existe = $banco->cursos->findOne(['codigo' => $codigo]);
 
         if ($existe) {
             $erro = 'Já existe um curso com esse código.';
         } else {
-            // insertOne grava um documento na coleção "cursos"
-            // (o MongoDB cria a coleção sozinho na primeira vez)
             $banco->cursos->insertOne([
                 'nome'          => $nome,
                 'codigo'        => $codigo,
@@ -41,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'vagas'         => $vagas,
             ]);
 
-            // Volta para a lista (que vamos criar no próximo passo)
             header('Location: listar.php?msg=cadastrado');
             exit;
         }
