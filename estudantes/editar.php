@@ -108,91 +108,103 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once __DIR__ . '/../includes/cabecalho.php';
 ?>
 
-<h1 class="mb-4">Editar Estudante</h1>
+<h1>Editar Estudante</h1>
 
 <?php if ($erro !== ''): ?>
-    <div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>
+    <p role="alert"><strong>Erro:</strong> <?= htmlspecialchars($erro) ?></p>
 <?php endif; ?>
 
-<form method="post" class="card card-body shadow-sm">
+<form method="post" action="">
+    <fieldset>
+        <legend>Dados do estudante</legend>
 
-    <h5 class="mb-3">Dados do estudante</h5>
-    <div class="row g-3">
-        <div class="col-md-8">
-            <label class="form-label">Nome completo</label>
-            <input type="text" name="nome" class="form-control" required
+        <p>
+            <label for="nome">Nome completo:</label><br>
+            <input type="text" id="nome" name="nome" required
                    value="<?= htmlspecialchars($dados['nome']) ?>">
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">RA (registro acadêmico)</label>
-            <input type="text" name="ra" class="form-control" required
+        </p>
+
+        <p>
+            <label for="ra">RA (registro acadêmico):</label><br>
+            <input type="text" id="ra" name="ra" required
                    value="<?= htmlspecialchars($dados['ra']) ?>">
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">E-mail</label>
-            <input type="email" name="email" class="form-control" required
+        </p>
+
+        <p>
+            <label for="email">E-mail:</label><br>
+            <input type="email" id="email" name="email" required
                    value="<?= htmlspecialchars($dados['email']) ?>">
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">CPF (11 números)</label>
-            <input type="text" name="cpf" maxlength="14" class="form-control" required
+        </p>
+
+        <p>
+            <label for="cpf">CPF (11 números):</label><br>
+            <input type="text" id="cpf" name="cpf" maxlength="14" required
                    value="<?= htmlspecialchars($dados['cpf']) ?>">
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">Data de nascimento</label>
-            <input type="date" name="data_nascimento" class="form-control" required
+        </p>
+
+        <p>
+            <label for="data_nascimento">Data de nascimento:</label><br>
+            <input type="date" id="data_nascimento" name="data_nascimento" required
                    value="<?= htmlspecialchars($dados['data_nascimento']) ?>">
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">Telefone</label>
-            <input type="text" name="telefone" class="form-control" required
+        </p>
+
+        <p>
+            <label for="telefone">Telefone:</label><br>
+            <input type="tel" id="telefone" name="telefone" required
                    value="<?= htmlspecialchars($dados['telefone']) ?>">
-        </div>
-    </div>
+        </p>
+    </fieldset>
 
-    <h5 class="mt-4 mb-3">Endereço</h5>
-    <div class="row g-3">
-        <div class="col-md-3">
-            <label class="form-label">CEP</label>
-            <input type="text" name="cep" maxlength="9" class="form-control" required
+    <fieldset>
+        <legend>Endereço</legend>
+
+        <p>
+            <label for="cep">CEP:</label><br>
+            <input type="text" id="cep" name="cep" maxlength="9" required
                    value="<?= htmlspecialchars($dados['cep']) ?>">
-        </div>
-        <div class="col-md-7">
-            <label class="form-label">Rua</label>
-            <input type="text" name="rua" class="form-control" required
-                   value="<?= htmlspecialchars($dados['rua']) ?>">
-        </div>
-        <div class="col-md-2">
-            <label class="form-label">Número</label>
-            <input type="text" name="numero" class="form-control" required
-                   value="<?= htmlspecialchars($dados['numero']) ?>">
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Bairro</label>
-            <input type="text" name="bairro" class="form-control" required
-                   value="<?= htmlspecialchars($dados['bairro']) ?>">
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Cidade</label>
-            <input type="text" name="cidade" class="form-control" required
-                   value="<?= htmlspecialchars($dados['cidade']) ?>">
-        </div>
-        <div class="col-md-2">
-            <label class="form-label">Estado (UF)</label>
-            <input type="text" name="estado" maxlength="2" class="form-control" required
-                   value="<?= htmlspecialchars($dados['estado']) ?>">
-        </div>
-        <div class="col-md-2">
-            <label class="form-label">Complemento</label>
-            <input type="text" name="complemento" class="form-control"
-                   value="<?= htmlspecialchars($dados['complemento']) ?>">
-        </div>
-    </div>
+        </p>
 
-    <div class="mt-4">
-        <button type="submit" class="btn btn-primary">Salvar alterações</button>
-        <a href="listar.php" class="btn btn-secondary">Cancelar</a>
-    </div>
+        <p>
+            <label for="rua">Rua:</label><br>
+            <input type="text" id="rua" name="rua" required
+                   value="<?= htmlspecialchars($dados['rua']) ?>">
+        </p>
+
+        <p>
+            <label for="numero">Número:</label><br>
+            <input type="text" id="numero" name="numero" required
+                   value="<?= htmlspecialchars($dados['numero']) ?>">
+        </p>
+
+        <p>
+            <label for="bairro">Bairro:</label><br>
+            <input type="text" id="bairro" name="bairro" required
+                   value="<?= htmlspecialchars($dados['bairro']) ?>">
+        </p>
+
+        <p>
+            <label for="cidade">Cidade:</label><br>
+            <input type="text" id="cidade" name="cidade" required
+                   value="<?= htmlspecialchars($dados['cidade']) ?>">
+        </p>
+
+        <p>
+            <label for="estado">Estado (UF):</label><br>
+            <input type="text" id="estado" name="estado" maxlength="2" required
+                   value="<?= htmlspecialchars($dados['estado']) ?>">
+        </p>
+
+        <p>
+            <label for="complemento">Complemento:</label><br>
+            <input type="text" id="complemento" name="complemento"
+                   value="<?= htmlspecialchars($dados['complemento']) ?>">
+        </p>
+    </fieldset>
+
+    <p>
+        <button type="submit">Salvar alterações</button>
+        <a href="listar.php">Cancelar</a>
+    </p>
 </form>
 
 <?php require_once __DIR__ . '/../includes/rodape.php'; ?>
