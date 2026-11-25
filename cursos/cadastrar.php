@@ -42,49 +42,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once __DIR__ . '/../includes/cabecalho.php';
 ?>
 
-<h1 class="mb-4">Cadastrar Curso</h1>
+<h1>Cadastrar Curso</h1>
 
 <?php if ($erro !== ''): ?>
-    <div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>
+    <p role="alert"><strong>Erro:</strong> <?= htmlspecialchars($erro) ?></p>
 <?php endif; ?>
 
-<form method="post" class="card card-body shadow-sm">
-    <div class="row g-3">
-        <div class="col-md-8">
-            <label class="form-label">Nome do curso</label>
-            <input type="text" name="nome" class="form-control" required
-                   value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>">
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Código</label>
-            <input type="text" name="codigo" class="form-control" required
-                   value="<?= htmlspecialchars($_POST['codigo'] ?? '') ?>">
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">Professor</label>
-            <input type="text" name="professor" class="form-control" required
-                   value="<?= htmlspecialchars($_POST['professor'] ?? '') ?>">
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Carga horária (horas)</label>
-            <input type="number" name="carga_horaria" min="1" class="form-control" required
-                   value="<?= htmlspecialchars($_POST['carga_horaria'] ?? '') ?>">
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Vagas</label>
-            <input type="number" name="vagas" min="1" class="form-control" required
-                   value="<?= htmlspecialchars($_POST['vagas'] ?? '') ?>">
-        </div>
-        <div class="col-12">
-            <label class="form-label">Descrição</label>
-            <textarea name="descricao" rows="3" class="form-control"><?= htmlspecialchars($_POST['descricao'] ?? '') ?></textarea>
-        </div>
-    </div>
+<form method="post" action="">
+    <fieldset>
+        <legend>Dados do Curso</legend>
 
-    <div class="mt-4">
-        <button type="submit" class="btn btn-primary">Salvar</button>
-        <a href="listar.php" class="btn btn-secondary">Cancelar</a>
-    </div>
+        <p>
+            <label for="nome">Nome do curso:</label><br>
+            <input type="text" id="nome" name="nome" required
+                   value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>">
+        </p>
+
+        <p>
+            <label for="codigo">Código:</label><br>
+            <input type="text" id="codigo" name="codigo" required
+                   value="<?= htmlspecialchars($_POST['codigo'] ?? '') ?>">
+        </p>
+
+        <p>
+            <label for="professor">Professor:</label><br>
+            <input type="text" id="professor" name="professor" required
+                   value="<?= htmlspecialchars($_POST['professor'] ?? '') ?>">
+        </p>
+
+        <p>
+            <label for="carga_horaria">Carga horária (horas):</label><br>
+            <input type="number" id="carga_horaria" name="carga_horaria" min="1" required
+                   value="<?= htmlspecialchars($_POST['carga_horaria'] ?? '') ?>">
+        </p>
+
+        <p>
+            <label for="vagas">Vagas:</label><br>
+            <input type="number" id="vagas" name="vagas" min="1" required
+                   value="<?= htmlspecialchars($_POST['vagas'] ?? '') ?>">
+        </p>
+
+        <p>
+            <label for="descricao">Descrição:</label><br>
+            <textarea id="descricao" name="descricao" rows="4" cols="50"><?= htmlspecialchars($_POST['descricao'] ?? '') ?></textarea>
+        </p>
+    </fieldset>
+
+    <p>
+        <button type="submit">Salvar</button>
+        <a href="listar.php">Cancelar</a>
+    </p>
 </form>
 
 <?php require_once __DIR__ . '/../includes/rodape.php'; ?>
