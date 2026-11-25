@@ -59,22 +59,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once __DIR__ . '/../includes/cabecalho.php';
 ?>
 
-<h1 class="mb-4">Nova Matrícula</h1>
+<h1>Nova Matrícula</h1>
 
 <?php if ($erro !== ''): ?>
-    <div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>
+    <p role="alert"><strong>Erro:</strong> <?= htmlspecialchars($erro) ?></p>
 <?php endif; ?>
 
 <?php if (count($estudantes) === 0 || count($cursos) === 0): ?>
-    <div class="alert alert-warning">
-        Para matricular, é preciso ter pelo menos um estudante e um curso cadastrados.
-    </div>
+    <p>Para matricular, é preciso ter pelo menos um estudante e um curso cadastrados.</p>
 <?php else: ?>
-    <form method="post" class="card card-body shadow-sm">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Estudante</label>
-                <select name="estudante_id" class="form-select" required>
+    <form method="post" action="">
+        <fieldset>
+            <legend>Dados da Matrícula</legend>
+
+            <p>
+                <label for="estudante_id">Estudante:</label><br>
+                <select id="estudante_id" name="estudante_id" required>
                     <option value="">Selecione...</option>
                     <?php foreach ($estudantes as $e): ?>
                         <option value="<?= $e['_id'] ?>">
@@ -82,10 +82,11 @@ require_once __DIR__ . '/../includes/cabecalho.php';
                         </option>
                     <?php endforeach; ?>
                 </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Curso</label>
-                <select name="curso_id" class="form-select" required>
+            </p>
+
+            <p>
+                <label for="curso_id">Curso:</label><br>
+                <select id="curso_id" name="curso_id" required>
                     <option value="">Selecione...</option>
                     <?php foreach ($cursos as $c): ?>
                         <option value="<?= $c['_id'] ?>">
@@ -93,13 +94,13 @@ require_once __DIR__ . '/../includes/cabecalho.php';
                         </option>
                     <?php endforeach; ?>
                 </select>
-            </div>
-        </div>
+            </p>
+        </fieldset>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Matricular</button>
-            <a href="listar.php" class="btn btn-secondary">Cancelar</a>
-        </div>
+        <p>
+            <button type="submit">Matricular</button>
+            <a href="listar.php">Cancelar</a>
+        </p>
     </form>
 <?php endif; ?>
 
